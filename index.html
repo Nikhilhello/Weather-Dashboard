@@ -1,0 +1,481 @@
+  <!DOCTYPE html>
+  <html lang="en" ng-app="WeatherApp">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url('weather_bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: #333;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 15px;
+        text-align: center;
+      }
+
+      .navbar-left {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        margin-left: 20px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 20px;
+        font-size: 18px;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .home-container {
+        
+    text-align: center;
+    margin-top: 20px;
+  }
+
+
+  .home-text {
+    font-size: 36px;
+    font-weight: bold;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+  }
+
+  .home-text.hover-effect {
+    transform: scale(1.1); /* Increase size */
+    text-shadow: 4px 4px 10px rgba(90, 81, 81, 0.5); /* Add depth */
+  }
+
+      h1 {
+        font-family: Georgia, 'Times New Roman', Times, serif ;
+        text-align: center;
+        font-size: 36px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+
+      input[type="text"] {
+    width: 60%;  /* Reduce width */
+    max-width: 600px; /* Set a max width */
+    margin-bottom: 10px; /* Adds space below the input box */
+    padding: 10px;
+    font-size: 17px;
+    margin-right: 10px;
+    margin-left: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+
+      button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        margin-bottom: 10px; /* Adds space below the input box */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+  ----------------------
+  .weather-details p {
+    margin: 10px 0; /* Add spacing between elements */
+  }
+
+
+     .weather-card {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 30px; /* Increased padding */
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Adding more space between elements */
+.weather-card h2 {
+  margin-bottom: 20px; /* Space below city name */
+}
+
+.weather-card p {
+  font-size: 18px;
+  /*font-weight: bold;
+ /* color: #007bff; /* Blue color for better visibility */
+  margin: 15px 0; /* Increased vertical space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+}
+
+.weather-card p span {
+  color: #333; /* Keeping value text black for contrast */
+  font-weight: normal;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .weather-card {
+    width: 90%;
+  }
+}
+
+  ------------------------
+
+  .weather-card {
+  text-align: center; /* Center align all text */
+  background-color: #f9f9f9; /* Light background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  display: inline-block;
+}
+
+h2 {
+  
+  font-weight: bold;
+  color: #333;
+}
+
+.weather-details p {
+  font-weight: bold;
+  color: #007bff; /* Blue color for better visibility */
+  font-size: 18px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  font-weight: bold;
+  color: blue; /* Blue text for labels */
+}
+
+
+
+      .favorite-cities {
+        margin-top: 40px;
+      }
+
+      .favorite-cities h2 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      .favorite-cities ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .favorite-cities li {
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .favorite-cities button {
+        background-color: #ff5722;
+        font-size: 14px;
+      }
+
+      .favorite-cities button:hover {
+        background-color: #e64a19;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      /*-------------*/
+      .input-container {
+  display: flex;
+  align-items: center;
+  
+  justify-content: center; /* Center horizontally */
+}
+      
+      /* Responsive */
+      @media (max-width: 480px) {
+  .input-container {
+    justify-content: space-between; /* Keeps alignment */
+    width: 90%; /* Adapts to screen width */
+    /*margin-bottom: 20px;  Adds space below the input box */
+  }
+
+  input[type="text"] {
+    flex-grow: 1; /* Allows it to shrink */
+    min-width: 60%; /* Ensures input doesn't become too small */
+  }
+
+  .get-weather-btn {
+    font-size: 14px; /* Slightly smaller button text on small screens */
+    padding: 6px 10px; /* Adjust padding */
+  }
+}
+
+
+/* Make the card wider on smaller screens */
+@media (max-width: 480px) {
+  .weather-card {
+    width: 60%; /* Increases width on smaller screens -----------------*/
+  }
+}
+
+/* Ensure button stays on the right of input field */
+@media (max-width: 480px) {
+  .input-container {
+    flex-direction: column;
+  }
+
+  input[type="text"], button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Reduce button size */
+  .favorite-cities button {
+    padding: 5px 8px; /* Smaller padding */
+    font-size: 12px; /* Smaller text */
+  }
+
+  /* Align buttons properly */
+  .favorite-cities {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .favorite-cities .city-item {
+    display: flex;
+    align-items: center;  /* Align items vertically */
+    justify-content: space-between; /* Space out city name and buttons */
+    width: 100%;
+    max-width: 350px;  /* Restrict width */
+    margin: 5px auto;
+    padding: 10px;
+    background-color: #f8f9fa; /* Light background */
+    border-radius: 8px; /* Rounded edges */
+}
+
+/* Buttons Styling */
+.favorite-cities button {
+    padding: 6px 12px;  /* Adjust padding */
+    font-size: 14px; /* Adjust font size */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Green Get Weather Button */
+.get-weather-btn {
+    background-color: green;
+    color: white;
+}
+
+/* Red Remove Button */
+.remove-btn {
+    background-color: red;
+    color: white;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 480px) {
+    .favorite-cities .city-item {
+        flex-direction: column; /* Stack city name and buttons */
+        align-items: center; /* Center everything */
+        max-width: 250px; /* Reduce width */
+        padding: 8px;
+    }
+
+    .favorite-cities button {
+        width: 32%; /* Make buttons full width */
+        font-size: 12px; /* Smaller font size */
+        margin-top: 5px; /* Add space between buttons */
+    }
+}
+
+
+
+
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="navbar-left">
+        <span>Nikhil K</span>
+      </div>
+      <a href="#!/weather">Weather Dashboard</a>
+      <a href="#!/">Home</a>
+      
+    </nav>
+
+    <div class="container" ng-view></div>
+
+    <script>
+      angular.module('WeatherApp', ['ngRoute'])
+        .config(['$routeProvider', function($routeProvider) {
+          $routeProvider
+          .when('/', {
+            template: `
+                    <div class="home-container">
+                    <h1 class="home-text" ng-mouseover="hover = true" ng-mouseleave="hover = false" ng-class="{'hover-effect': hover}">
+                    Welcome to the Weather Dashboard
+        </h1>
+      </div>
+    `
+  })
+  
+
+            .when('/weather', {
+              template: `
+                <div ng-controller="WeatherController as weatherCtrl">
+                  <h1>Weather Dashboard</h1 >
+                  <div class="input-container">
+            <input type="text" ng-model="weatherCtrl.city" placeholder="🌍 Enter city name">
+            <button class="get-weather-btn" ng-click="weatherCtrl.getWeather()">🌦️ Get Weather</button>
+          </div>
+
+<center>
+          <div ng-if="weatherCtrl.weatherData" class="weather-card">
+            <center>
+              <h2>{{ weatherCtrl.weatherData.name }}</h2>
+            </center>
+            <div class="weather-details">
+              <p>🌡️ <span class="label">Temperature: </span> {{ weatherCtrl.weatherData.main.temp }}°C</p>
+              <p>💧 <span class="label">Humidity: </span> {{ weatherCtrl.weatherData.main.humidity }}%</p>
+              <p>☁️ <span class="label">Conditions: </span> {{ weatherCtrl.weatherData.weather[0].description }}</p>
+            </div>
+          </div>
+</center>
+
+
+
+
+                  <div ng-if="weatherCtrl.error" class="error-message">
+                    <p>{{ weatherCtrl.error }}</p>
+                  </div>
+
+                  <div class="favorite-cities" ng-if="weatherCtrl.favoriteCities.length > 0">
+                    <h2>⭐ Favorite Cities</h2>
+                    <ul>
+                      <li ng-repeat="city in weatherCtrl.favoriteCities | orderBy">
+                        <span>📌 {{ city }}</span>
+                        <button ng-click="weatherCtrl.getWeather(city)">🌦️ Get Weather</button>
+                        <button ng-click="weatherCtrl.removeFromFavorites(city)">❌ Remove</button>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div ng-if="!weatherCtrl.favoriteCities.includes(weatherCtrl.city)">
+                    <button ng-click="weatherCtrl.addToFavorites()">Add to Favorites</button>
+                  </div>
+                </div>
+              `
+            })
+            .otherwise({
+              redirectTo: '/'
+            });
+        }])
+        .controller('WeatherController', ['$http', function($http) {
+          var vm = this;
+          vm.city = '';
+          vm.weatherData = null;
+          vm.error = '';
+          vm.favoriteCities = [];
+
+          
+
+          vm.getWeather = function(city) {
+    vm.error = ''; // Reset previous error message
+
+    var selectedCity = city || vm.city;
+
+    if (!selectedCity) {
+      vm.error = '⚠️ Please enter a city name!';
+      vm.weatherData = null; // Clear previous weather data
+      return;
+    }
+
+    var apiKey = 'bd5e378503939ddaee76f12ad7a97608'; // Replace with your API key
+    var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${selectedCity}&appid=${apiKey}&units=metric`;
+
+    console.log('API URL:', apiUrl); // Log the API URL
+
+    $http.get(apiUrl)
+      .then(function(response) {
+        console.log('API Response:', response.data); // Log the response
+        vm.weatherData = response.data;
+        vm.error = '';
+      })
+      .catch(function(error) {
+        console.error('API Error:', error); // Log the error
+        vm.weatherData = null;
+        if (error.status === 404) {
+          vm.error = '❌ City not found. Please check the city name and try again.';
+        } else if (error.status === 401) {
+          vm.error = '❌ Invalid API key. Please check your API key.';
+        } else {
+          vm.error = '⚠️ An error occurred. Please try again later.';
+        }
+      });
+  };
+
+
+          vm.addToFavorites = function() {
+            if (vm.city && !vm.favoriteCities.includes(vm.city)) {
+              vm.favoriteCities.push(vm.city);
+            }
+          };
+
+          vm.removeFromFavorites = function(city) {
+            const index = vm.favoriteCities.indexOf(city);
+            if (index !== -1) {
+              vm.favoriteCities.splice(index, 1);
+            }
+          };
+        }]);
+    </script>
+    
+  </body>
+  </html>
