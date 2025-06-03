@@ -31,7 +31,7 @@ Weather-Dashboard/
 
 - **AngularJS 1.8**
 - **HTML5 & CSS3**
-- **JavaScript (ES6)**
+- **JavaScript**
 - **OpenWeatherMap API**
 - **Responsive Design (Media Queries)**
 
@@ -39,7 +39,7 @@ Weather-Dashboard/
 
 ## 🚀 Getting Started
 
-### 1. Clone the repository
+<!--### 1. Clone the repository -->
 
 ```bash
 
